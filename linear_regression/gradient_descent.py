@@ -1,7 +1,6 @@
 import math
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.ticker import MaxNLocator
 
 EPSILON = 1e-10 # tolerance for imprecision in floating-point calculations
 

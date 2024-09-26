@@ -40,9 +40,9 @@ def compute_gradient(X: np.ndarray, y: np.ndarray, w: np.ndarray, b: float):
     return dj_dw, dj_db
 
 def gradient_descent(X: np.ndarray, y: np.ndarray, w_init: np.ndarray, b_init: float, alpha: float):
-    J_history = []
     w = w_init.copy()
     b = b_init
+    J_history = [compute_cost(X, y, w, b)]
 
     i = 0
     while True:
@@ -56,7 +56,7 @@ def gradient_descent(X: np.ndarray, y: np.ndarray, w_init: np.ndarray, b_init: f
 
         J_history.append(compute_cost(X, y, w, b))
 
-        if sum(abs(old_w - w)) <= EPSILON and abs(old_b - b) <= EPSILON:
+        if abs(J_history[-2] - J_history[-1]) <= EPSILON:
             break
 
     return w, b, J_history
@@ -79,7 +79,7 @@ def main(dataset: dict[str, list[float]]):
     X_train = np.array([[dataset[key][i] for key in dataset.keys() if key != target_column] for i in range(m)])
     y_train = np.array(dataset[target_column])
 
-    # Optimise weights
+    # Optimise weights (may take a while)
     w, b, J_history = gradient_descent(X_train, y_train, np.zeros(n), 0, 5.0e-7)
     print("Final w weights:", w, "Final b weight:", b, "Cost with final weights:", J_history[-1])
     visualise_gradient_descent(J_history)

@@ -108,7 +108,7 @@ def gradient_descent(x: np.ndarray, y: np.ndarray, w_in: float, b_in: float, alp
         if i % 1000 == 0:
             print(f"Iteration {i}: Cost {compute_cost(x, y, w, b): 0.2e} dj_dw: {dj_dw: 0.3e} dj_db: {dj_db: 0.3e} w: {w: 0.3e} b: {b: 0.5e}")
 
-        if abs(old_w - w) <= EPSILON and abs(old_b - b) <= EPSILON:
+        if len(J_history) > 2 and abs(J_history[-1] - J_history[-2]) <= EPSILON:
             break
 
     return w, b, J_history, p_history
@@ -198,14 +198,18 @@ def visualise_cost_change_on_contour(x: np.ndarray, y: np.ndarray, p_history: li
 
     plt.show()
 
-w_final, b_final, J_history, p_history = gradient_descent(x_train, y_train, 0, 0, 1.0e-2)
+def main():
+    w_final, b_final, J_history, p_history = gradient_descent(x_train, y_train, 0, 0, 1.0e-2)
 
-print(f"(w, b) found by gradient decsent: ({w_final}, {b_final})")
-print(f"Cost: {compute_cost(x_train, y_train, w_final, b_final)}")
+    print(f"(w, b) found by gradient decsent: ({w_final}, {b_final})")
+    print(f"Cost: {compute_cost(x_train, y_train, w_final, b_final)}")
 
-visualise_gradient_descent(J_history)
-visualise_cost_change_on_contour(x_train, y_train, p_history)
+    visualise_gradient_descent(J_history)
+    visualise_cost_change_on_contour(x_train, y_train, p_history)
 
-print(f"1000 sqft House Price Prediction: {w_final * 1.0 + b_final: .2f} Thousand Dollars")
-print(f"1200 sqft House Price Prediction: {w_final * 1.2 + b_final: .2f} Thousand Dollars")
-print(f"2000 sqft House Price Prediction: {w_final * 2.0 + b_final: .2f} Thousand Dollars")
+    print(f"1000 sqft House Price Prediction: {w_final * 1.0 + b_final: .2f} Thousand Dollars")
+    print(f"1200 sqft House Price Prediction: {w_final * 1.2 + b_final: .2f} Thousand Dollars")
+    print(f"2000 sqft House Price Prediction: {w_final * 2.0 + b_final: .2f} Thousand Dollars")
+
+if __name__ == "__main__":
+    main()

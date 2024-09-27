@@ -4,6 +4,26 @@ import matplotlib.pyplot as plt
 from multiple_linear_regression import gradient_descent
 from normal_equation import normal_equation, compute_cost
 
+def load_txt_dataset(txt_data_filename: str):
+    """
+    Loads a dataset from a txt file where the first line is a header with
+    column names and following lines are numeric data.
+
+    Args:
+        txt_data_filename (str): Path to .txt data file
+
+    Returns:
+        tuple (ndarray, ndarray, list[str], str):
+            - features (ndarray)
+            - labels (ndarray)
+            - feature_names (list[str])
+            - target_name (str)
+    """
+    with open(txt_data_filename) as datafile:
+        headers = datafile.readline().strip().split(",")
+    dataset = np.loadtxt(txt_data_filename, skiprows=1, delimiter=",")
+    return dataset[:,:-1], dataset[:,-1], headers[:-1], headers[-1]
+
 def z_score_normalise(X: np.ndarray):
     mu = np.mean(X, axis=0) # find mean for each feature
     sigma = np.std(X, axis=0) # find std for each feature
@@ -27,18 +47,14 @@ def visualise_features_against_target(X: np.ndarray, y: np.ndarray, feature_name
     plt.show()
 
 def main(txt_data_filename: str):
-    with open(txt_data_filename) as datafile:
-        headers = datafile.readline().strip().split(",")
-    dataset = np.loadtxt(txt_data_filename, skiprows=1, delimiter=",")
-    X_train = dataset[:,:-1]
+    X_train, y_train, features, target_column = load_txt_dataset(txt_data_filename)
     X_train_z_normalised = z_score_normalise(X_train)
     X_train_mean_normalised = mean_score_normalise(X_train)
-    y_train = dataset[:,-1]
-    _, n = X_train.shape
+    n = X_train.shape[1]
 
-    visualise_features_against_target(X_train, y_train, headers[:-1], headers[-1], "Unsacled Features against Target")
-    visualise_features_against_target(X_train_z_normalised, y_train, headers[:-1], headers[-1], "Z-score Normalised Features against Target")
-    visualise_features_against_target(X_train_mean_normalised, y_train, headers[:-1], headers[-1], "Mean Normalised Features against Target")
+    visualise_features_against_target(X_train, y_train, features, target_column, "Unsacled Features against Target")
+    visualise_features_against_target(X_train_z_normalised, y_train, features, target_column, "Z-score Normalised Features against Target")
+    visualise_features_against_target(X_train_mean_normalised, y_train, features, target_column, "Mean Normalised Features against Target")
 
     print("Results by Normal Equation:")
     start_time = time.time()

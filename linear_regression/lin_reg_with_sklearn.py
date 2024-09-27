@@ -2,26 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.linear_model import SGDRegressor
 from sklearn.preprocessing import StandardScaler
-
-def load_txt_dataset(txt_data_filename: str):
-    """
-    Loads a dataset from a txt file where the first line is a header with
-    column names and following lines are numeric data.
-
-    Args:
-        txt_data_filename (str): Path to .txt data file
-
-    Returns:
-        tuple (ndarray, ndarray, list[str], str):
-            - features (ndarray)
-            - labels (ndarray)
-            - feature_names (list[str])
-            - target_name (str)
-    """
-    with open(txt_data_filename) as datafile:
-        headers = datafile.readline().strip().split(",")
-    dataset = np.loadtxt(txt_data_filename, skiprows=1, delimiter=",")
-    return dataset[:,:-1], dataset[:,-1], headers[:-1], headers[-1]
+from feature_scaling import load_txt_dataset
 
 X_train, y_train, features, target_column = load_txt_dataset("../data/houses.txt")
 

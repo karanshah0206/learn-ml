@@ -35,7 +35,7 @@ def visualise_predictions(x: np.ndarray, y: np.ndarray, X: np.ndarray, model_w: 
     plt.legend()
     plt.show()
 
-# Generate dummy dataset where dependent variable is linearly related to the square of covariant
+# Generate dummy dataset where dependent variable is linearly related to the square of covariate
 x = np.arange(0, 20)
 y = 1 + x**2
 

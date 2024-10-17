@@ -12,7 +12,7 @@ b = 0
 def sigmoid(z: float):
     return 1 / (1 + np.exp(-z))
 
-def binary_crossentropy(y_hat_i: float, y_i: np.ndarray):
+def binary_crossentropy(y_hat_i: float, y_i: float):
     return -y_i * math.log10(y_hat_i) - (1 - y_i) * math.log10(1 - y_hat_i)
 
 def compute_model_output(X: np.ndarray, w: np.ndarray, b: float):
